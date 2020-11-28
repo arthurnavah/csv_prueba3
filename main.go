@@ -16,7 +16,7 @@ crocodrile,green,river`
 
 	lector := csv.NewReader(strings.NewReader(data))
 
-	contenido, err := lector.Read()
+	contenido, err := lector.ReadAll()
 
 	if err != nil {
 		log.Fatal(err)
@@ -29,12 +29,16 @@ crocodrile,green,river`
 	}
 
 	defer archivo.Close()
+
 	escritor := csv.NewWriter(archivo)
 
-	err = escritor.Write(contenido)
+	for i := range contenido {
+		err = escritor.Write(contenido[i])
 
-	if err != nil {
-		log.Fatal(err)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
+	escritor.Flush()
 
 }
